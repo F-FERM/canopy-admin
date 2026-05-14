@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { fileUpload } from "@/api/upload/api";
+import { fileUpload } from "../api/upload/api";
 
 type Props = {
   label: string;

@@ -20,8 +20,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Clio Admin Panel",
-  description: "Manage Clio website content",
+  title: "Canopy Admin Panel",
+  description: "Manage Canopy website content",
 };
 
 export default function RootLayout({

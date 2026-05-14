@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "@/api/auth/auth";
+
 import { LocalStorage } from "@/utility/LocalStorage";
+import { login } from "../api/auth/auth";
 
 export default function LoginPage() {
   const router = useRouter();
