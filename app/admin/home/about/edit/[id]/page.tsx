@@ -2,79 +2,47 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { AboutSection, listAboutApi, updateAbout } from "@/app/api/home/homeaboutstat";
-import AboutForm from "@/app/components/AboutForm";
+import AboutSectionForm from "@/app/Components/HomeAboutForm";
+import { AboutSection, getAboutApi, updateAboutApi } from "@/app/api/home/homeaboutstat";
+
 
 export default function EditAboutPage() {
   const router = useRouter();
-  const params = useParams();
-  const id = params?.id as string;
+  const { id } = useParams();
 
-  const [initialData, setInitialData] = useState<Partial<AboutSection> | null>(null);
+  const [data, setData] = useState<AboutSection | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const all = await listAboutApi({});
-        const found = all.find((item) => item._id === id);
-        setInitialData(found || null);
-      } catch (err) {
-        console.error("Load error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    getAboutApi(id as string)
+      .then(setData)
+      .finally(() => setLoading(false));
   }, [id]);
 
-  const handleSubmit = async (data: any) => {
-    try {
-      await updateAbout({ ...data, _id: id });
-      router.push("/admin/home/about");
-    } catch (err) {
-      console.error("Update error:", err);
-      alert("Failed to update About section");
-    }
+  const handleSubmit = async (form: any) => {
+    await updateAboutApi({
+      ...form,
+      _id: id as string,
+    });
+
+    router.push("/admin/home/about");
   };
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
-      </div>
-    );
+  if (loading) return <div className="p-10">Loading...</div>;
 
-  if (!initialData)
-    return (
-      <div className="p-8 text-center text-gray-500">
-        Item not found.{" "}
-        <Link href="/admin/home/about" className="text-blue-600 underline">
-          Go back
-        </Link>
-      </div>
-    );
+  if (!data)
+    return <div className="p-10">Not found</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link
-          href="/admin/home/about"
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-        >
-          <ArrowLeft size={24} />
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Edit About Section</h1>
-          <p className="text-gray-500">Update the about section for the Home page.</p>
-        </div>
-      </div>
+    <div className="p-6">
+      <h1 className="text-xl font-bold mb-4">
+        Edit About Section
+      </h1>
 
-      <div className="bg-gray-50 p-6 rounded-xl border border-dashed">
-        <AboutForm initialData={initialData} onSubmit={handleSubmit} />
-      </div>
+      <AboutSectionForm
+        initialData={data}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

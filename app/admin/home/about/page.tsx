@@ -2,23 +2,23 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit, Trash2, BarChart2 } from "lucide-react";
-import { ListHomeAboutResponse } from "@/app/Interfaces/HomeAboutStat";
-import { deleteAbout, listAboutApi } from "@/app/api/home/homeaboutstat";
 
+import { Edit, Trash2, Plus } from "lucide-react";
+import { AboutSection, deleteAboutApi, listAboutApi } from "@/app/api/home/homeaboutstat";
 
-export default function AboutPage() {
-  const [data, setData] = useState<ListHomeAboutResponse[]>([]);
+export default function AboutListPage() {
+  const [data, setData] = useState<AboutSection[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
       const res = await listAboutApi({});
-      const arrayData = Array.isArray(res) ? res : (res as any)?.data || [res];
-      setData(Array.isArray(arrayData) ? arrayData : []);
-    } catch (err) {
-      console.error("Fetch error:", err);
-      setData([]);
+
+      const arr = Array.isArray(res)
+        ? res
+        : (res as any)?.data || [];
+
+      setData(arr);
     } finally {
       setLoading(false);
     }
@@ -29,112 +29,83 @@ export default function AboutPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this About section?")) return;
-    try {
-      await deleteAbout(id);
-      fetchData();
-    } catch (err) {
-      console.error("Delete error:", err);
-      alert("Failed to delete item");
-    }
+    if (!confirm("Delete this About section?")) return;
+
+    await deleteAboutApi(id);
+    fetchData();
   };
 
   if (loading)
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
-      </div>
-    );
+    return <div className="p-10">Loading...</div>;
 
   return (
-    <div className="space-y-6">
-      {/* ── Header ── */}
-      <div className="flex justify-between items-center">
+    <div className="p-6 space-y-6">
+      {/* HEADER */}
+      <div className="flex justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Home About Section</h1>
-          <p className="text-gray-500">Manage the about section of the Home page.</p>
+          <h1 className="text-2xl font-bold">About CMS</h1>
+          <p className="text-gray-500">
+            Manage About section content
+          </p>
         </div>
+
         <Link
           href="/admin/home/about/create"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+          className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2"
         >
-          <Plus size={20} />
-          Add About Section
+          <Plus size={18} /> Create
         </Link>
       </div>
 
-      {/* ── Table ── */}
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-50 border-b">
-              <th className="p-4 font-semibold text-gray-700">Heading</th>
-              <th className="p-4 font-semibold text-gray-700">Badge</th>
-              <th className="p-4 font-semibold text-gray-700">Paragraphs</th>
-              <th className="p-4 font-semibold text-gray-700">Stats</th>
-              <th className="p-4 font-semibold text-gray-700">Button</th>
-              <th className="p-4 font-semibold text-gray-700">Actions</th>
+      {/* TABLE */}
+      <div className="bg-white border rounded-xl">
+        <table className="w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="p-3 text-left">Heading</th>
+              <th className="p-3 text-left">Highlights</th>
+              <th className="p-3 text-left">Stats</th>
+              <th className="p-3 text-left">Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {data.length > 0 ? (
-              data.map((item) => (
-                <tr key={item._id} className="border-b hover:bg-gray-50 transition-colors">
-                  <td className="p-4">
-                    <p className="font-medium text-gray-800">{item.heading}</p>
-                    {item.headingHighlight && (
-                      <p className="text-sm text-blue-600">{item.headingHighlight}</p>
-                    )}
-                  </td>
-                  <td className="p-4 text-gray-600 text-sm">{item.badgeText || "—"}</td>
-                  <td className="p-4 text-gray-600 text-sm">
-                    {item.descriptions?.length ?? 0} paragraph
-                    {item.descriptions?.length !== 1 ? "s" : ""}
-                  </td>
-                  <td className="p-4">
-                    {item.stats?.length ? (
-                      <span className="inline-flex items-center gap-1 text-sm text-gray-600">
-                        <BarChart2 size={14} />
-                        {item.stats.length} stat{item.stats.length !== 1 ? "s" : ""}
-                      </span>
-                    ) : (
-                      <span className="text-gray-400 text-sm">—</span>
-                    )}
-                  </td>
-                  <td className="p-4 text-gray-600 text-sm">
-                    {item.buttonText ? (
-                      <span className="inline-flex items-center gap-1">
-                        <span>{item.buttonText}</span>
-                        <span className="text-gray-400">→ {item.buttonLink}</span>
-                      </span>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td className="p-4">
-                    <div className="flex gap-3">
-                      <Link
-                        href={`/admin/home/about/edit/${item._id}`}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                        title="Edit"
-                      >
-                        <Edit size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(item._id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
+            {data.map((item) => (
+              <tr key={item._id} className="border-t">
+                <td className="p-3 font-medium">
+                  {item.heading}
+                </td>
+
+                <td className="p-3 text-blue-600">
+                  {item.headingHighlight}
+                </td>
+
+                <td className="p-3">
+                  {item.stats?.length} items
+                </td>
+
+                <td className="p-3 flex gap-3">
+                  <Link
+                    href={`/admin/home/about/edit/${item._id}`}
+                    className="text-blue-600"
+                  >
+                    <Edit size={18} />
+                  </Link>
+
+                  <button
+                    onClick={() => handleDelete(item._id!)}
+                    className="text-red-600"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+
+            {data.length === 0 && (
               <tr>
-                <td colSpan={6} className="p-8 text-center text-gray-500 italic">
-                  No About sections found. Create one to get started.
+                <td className="p-6 text-center text-gray-500" colSpan={4}>
+                  No data found
                 </td>
               </tr>
             )}
