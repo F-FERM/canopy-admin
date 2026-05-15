@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { createSecurityServices } from "@/app/api/home/homeservice";
-import SecurityServicesForm from "@/app/Components/HomeServiceForm";
+import SecurityServicesForm from "@/app/components/HomeServiceForm";
 
 
 export default function CreateSecurityServicesPage() {

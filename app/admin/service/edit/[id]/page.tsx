@@ -11,7 +11,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 
-import ServiceLandingForm from "@/app/Components/ServiceLandingForm";
+import ServiceLandingForm from "@/app/components/ServiceLandingForm";
 import { listServiceLandingApi, ServiceLandingSection, updateServiceLanding } from "@/app/api/service/serviceLanding";
 
 

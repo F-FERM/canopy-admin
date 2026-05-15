@@ -46,32 +46,38 @@ const sidebarItems = [
     children: [
       { label: "Service", href: "/admin/service", icon: Image },
       { label: "Service Security", href: "/admin/service/service-security", icon: Image },
-      { label: "Service Industries", href: "/admin/service/service-industries", icon: Image }]
-  },
-  {
-    label: "Network",
-    icon: Workflow,
-    children: [{ label: "Manage", href: "/admin/network", icon: Image }],
+      { label: "Service Industries", href: "/admin/service/service-industries", icon: Image },
+      { label: "ServiceProcess", href: "/admin/service/service-process", icon: Image }],
   },
   {
     label: "Career",
-    icon: Briefcase,
-    children: [{ label: "Manage", href: "/admin/career", icon: Image }],
+    icon: Workflow,
+    children: [{ label: "Landing", href: "/admin/career", icon: Image },
+    { label: "Jobs", href: "/admin/career/job", icon: Image }],
   },
   {
-    label: "Safety & Compliance",
-    icon: ShieldCheck,
-    children: [{ label: "Manage", href: "/admin/safety", icon: Image }],
+    label: "Events",
+    icon: Workflow,
+    children: [{ label: "Landing", href: "/admin/events", icon: Image },
+    { label: "Upcoming Events", href: "/admin/events/upcoming-events", icon: Image },
+    ],
   },
   {
-    label: "Fleet",
-    icon: Anchor,
-    children: [{ label: "Manage", href: "/admin/fleet", icon: Image }],
+    label: "Blog",
+    icon: Workflow,
+    children: [{ label: "Landing", href: "/admin/blog", icon: Image },
+    ],
   },
+
   {
     label: "Contact",
     icon: Briefcase,
-    children: [{ label: "Manage", href: "/admin/contact", icon: Image }],
+    children: [{ label: "Manage", href: "/admin/contact/contact-landing", icon: Image }],
+  },
+  {
+    label: "CTA",
+    icon: Briefcase,
+    children: [{ label: "Manage", href: "/admin/home/cta-section", icon: Image }],
   },
   {
     label: "Footer",
@@ -115,9 +121,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <ChevronDown
                     size={16}
-                    className={`transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
+                    className={`transition-transform ${isOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -134,10 +139,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           href={sub.href}
                           className={`
                             flex items-center gap-3 px-3 py-2 rounded-md text-sm
-                            ${
-                              isActive
-                                ? "bg-white/10 text-white"
-                                : "text-gray-400 hover:bg-white/5 hover:text-white"
+                            ${isActive
+                              ? "bg-white/10 text-white"
+                              : "text-gray-400 hover:bg-white/5 hover:text-white"
                             }
                           `}
                         >

@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { AboutSection, listAboutApi, updateAbout } from "@/app/api/home/homeaboutstat";
-import AboutForm from "@/app/Components/AboutForm";
+import AboutForm from "@/app/components/AboutForm";
 
 export default function EditAboutPage() {
   const router = useRouter();

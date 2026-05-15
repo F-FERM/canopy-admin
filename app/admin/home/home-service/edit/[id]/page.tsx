@@ -7,7 +7,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { listSecurityServicesApi, SecurityServicesSection, updateSecurityServices } from "@/app/api/home/homeservice";
-import SecurityServicesForm from "@/app/Components/HomeServiceForm";
+import SecurityServicesForm from "@/app/components/HomeServiceForm";
 
 
 

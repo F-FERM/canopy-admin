@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createWhyChooseUs } from "@/app/api/home/homeChooseus";
-import WhyChooseUsForm from "@/app/Components/HomeChooseForm";
+import WhyChooseUsForm from "@/app/components/HomeChooseForm";
 
 
 

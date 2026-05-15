@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createIndustries } from "@/app/api/home/homeIndustries";
-import IndustriesWeServeForm from "@/app/Components/HomeIndustriesForm";
+import IndustriesWeServeForm from "@/app/components/HomeIndustriesForm";
 
 
 

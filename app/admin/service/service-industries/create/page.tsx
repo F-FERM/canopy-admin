@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createIndustriesGrid } from "@/app/api/service/serviceIndustries";
-import IndustriesGridForm from "@/app/Components/ServiceIndustryForm";
+import IndustriesGridForm from "@/app/components/ServiceIndustryForm";
 
 
 
