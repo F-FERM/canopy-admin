@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { ContactCTASection, listContactCTAApi, updateContactCTA } from "@/app/api/home/cta";
-import ContactCTAForm from "@/app/components/CtaForm";
+import ContactCTAForm from "@/app/Components/CtaForm";
 
 
 

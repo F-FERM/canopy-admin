@@ -1,4 +1,4 @@
-import HeroCrudPage from "@/app/components/HomeHerSection";
+import HeroCrudPage from "@/app/Components/HomeHerSection";
 import React from "react";
 
 function Home() {

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { createFooterApi } from "@/app/api/footer/footer";
-import FooterForm from "@/app/components/FooterForm";
+import FooterForm from "@/app/Components/FooterForm";
 
 export default function CreateFooterPage() {
     const router = useRouter();

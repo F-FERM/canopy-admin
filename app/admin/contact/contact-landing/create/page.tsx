@@ -6,7 +6,8 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createContactLanding } from "@/app/api/contact/ContactLanding";
-import ContactLandingForm from "../../../../components/ContactLandingForm";
+import ContactLandingForm from "@/app/Components/ContactLandingForm";
+
 
 
 export default function CreateContactLandingPage() {

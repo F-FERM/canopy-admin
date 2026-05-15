@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createEmployeeService } from "@/app/api/about/aboutEmployee";
-import EmployeeServiceForm from "@/app/components/AboutEmployeeForm";
+import EmployeeServiceForm from "@/app/Components/AboutEmployeeForm";
 
 
 export default function CreateEmployeeServicePage() {

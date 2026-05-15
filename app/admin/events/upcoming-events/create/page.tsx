@@ -6,7 +6,8 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createUpcomingEvents } from "@/app/api/events/upcoming";
-import UpcomingEventsForm from "../../../../components/UpcomingEventsForm";
+import UpcomingEventsForm from "@/app/Components/UpcomingEventsForm";
+
 
 
 

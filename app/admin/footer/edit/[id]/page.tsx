@@ -8,7 +8,7 @@ import {
     updateFooterApi,
     Footer,
 } from "@/app/api/footer/footer";
-import FooterForm from "@/app/components/FooterForm";
+import FooterForm from "@/app/Components/FooterForm";
 
 export default function EditFooterPage() {
     const { id } = useParams();

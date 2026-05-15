@@ -6,7 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { HomeHeroSection, listHomeHeroApi, updateHomeHero } from "@/app/api/home/home";
-import HomeHeroForm from "@/app/components/HomeHerForm";
+import HomeHeroForm from "@/app/Components/HomeHerForm";
 
 export default function EditHomeHeroPage() {
   const router = useRouter();

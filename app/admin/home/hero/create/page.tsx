@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import HomeHeroForm from "@/app/components/HomeHerForm";
+import HomeHeroForm from "@/app/Components/HomeHerForm";
 import { createHomeHero } from "@/app/api/home/home";
 
 export default function CreateHomeHeroPage() {

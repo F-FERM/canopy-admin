@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import BlogLandingForm from "@/app/components/BlogLandingForm";
+import BlogLandingForm from "@/app/Components/BlogLandingForm";
 import { listBlogLandingApi, updateBlogLanding } from "@/app/api/blog/landing";
 
 export default function EditBlogLandingPage() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import BlogLandingForm from "@/app/components/BlogLandingForm";
+import BlogLandingForm from "@/app/Components/BlogLandingForm";
 import { createBlogLanding } from "@/app/api/blog/landing";
 
 export default function CreateBlogLandingPage() {

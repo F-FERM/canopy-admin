@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createAboutCards } from "@/app/api/about/aboutValues";
-import AboutCardsForm from "@/app/components/AboutValuesForm";
+import AboutCardsForm from "@/app/Components/AboutValuesForm";
 
 
 

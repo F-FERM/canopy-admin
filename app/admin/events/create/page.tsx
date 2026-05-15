@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
-import EventsLandingForm from "@/app/components/EventLandingForm";
+import EventsLandingForm from "@/app/Components/EventLandingForm";
 import { createEventsLanding } from "@/app/api/events/landing";
 
 

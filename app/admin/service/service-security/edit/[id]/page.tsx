@@ -12,7 +12,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { SecurityServicesSection } from "@/app/api/home/homeservice";
 import { listServicesSectionApi, ServicesSection, updateServicesSection } from "@/app/api/service/serviceSecurity";
-import ServicesSectionForm from "@/app/components/ServiceSecurityForm";
+import ServicesSectionForm from "@/app/Components/ServiceSecurityForm";
 
 
 

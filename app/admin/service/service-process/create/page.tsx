@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createProcessSection } from "@/app/api/service/serviceProcess";
-import ProcessSectionForm from "@/app/components/ServiceForm";
+import ProcessSectionForm from "@/app/Components/ServiceForm";
 
 
 export default function CreateProcessSectionPage() {

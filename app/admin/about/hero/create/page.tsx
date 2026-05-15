@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { createAboutSection } from "@/app/api/about/abouthero";
-import AboutSectionForm from "@/app/components/AboutHero";
+import AboutSectionForm from "@/app/Components/AboutHero";
 
 
 export default function CreateAboutSectionPage() {

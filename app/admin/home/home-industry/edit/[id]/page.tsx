@@ -11,7 +11,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { IndustriesWeServeSection, listIndustriesApi, updateIndustries } from "@/app/api/home/homeIndustries";
-import IndustriesWeServeForm from "@/app/components/HomeIndustriesForm";
+import IndustriesWeServeForm from "@/app/Components/HomeIndustriesForm";
 
 
 

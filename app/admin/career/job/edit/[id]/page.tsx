@@ -14,7 +14,7 @@ import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
 import { CareerOpeningsSection, listCareerOpeningsApi, updateCareerOpenings } from "@/app/api/career/job";
-import CareerOpeningsForm from "@/app/components/CareerJobForm";
+import CareerOpeningsForm from "@/app/Components/CareerJobForm";
 
 
 
