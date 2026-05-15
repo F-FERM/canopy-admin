@@ -20,8 +20,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Canopy Admin Panel",
-  description: "Manage Canopy website content",
+  title: "Canopy Security",
+  description: "Canopy Security Services",
 };
 
 export default function RootLayout({
@@ -34,6 +34,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+     <head>
+        <link rel="icon" href="/images/SideLogo.png" type="image/png" />
+      </head>
       <body className="min-h-full flex flex-col">
         <QueryProvider>
           {children}
