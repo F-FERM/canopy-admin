@@ -10,6 +10,33 @@ export interface BlogItem {
   slug: string;
   isActive: boolean;
   publishedAt: string;
+  detailPage?: DetailPage;
+}
+
+export interface DetailPage {
+  heroSection: HeroSection;
+  importanceSection: ImportanceSection;
+}
+
+export interface HeroSection {
+  heading: string;
+  headingHighlight: string;
+  description: string;
+  image: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+export interface ImportanceSection {
+  heading: string;
+  headingHighlight: string;
+  description: string;
+  leftFeatures: Feature[];
+  rightFeatures: Feature[];
+}
+
+export interface Feature {
+  text: string;
 }
 
 export interface BlogSection {

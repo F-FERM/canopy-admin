@@ -25,6 +25,33 @@ interface BlogItem {
   slug: string;
   isActive: boolean;
   publishedAt: string;
+  detailPage?: DetailPage;
+}
+
+interface DetailPage {
+  heroSection: HeroSection;
+  importanceSection: ImportanceSection;
+}
+
+interface HeroSection {
+  heading: string;
+  headingHighlight: string;
+  description: string;
+  image: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+interface ImportanceSection {
+  heading: string;
+  headingHighlight: string;
+  description: string;
+  leftFeatures: Feature[];
+  rightFeatures: Feature[];
+}
+
+interface Feature {
+  text: string;
 }
 
 interface BlogSection {
@@ -46,6 +73,8 @@ type Props = {
 
 // ─────────────────────────────────────────────
 
+const defaultFeature = (): Feature => ({ text: "" });
+
 const defaultBlog = (): BlogItem => ({
   title: "",
   shortDescription: "",
@@ -54,8 +83,24 @@ const defaultBlog = (): BlogItem => ({
   buttonText: "Read More",
   slug: "",
   isActive: true,
-  publishedAt:
-    new Date().toISOString(),
+  publishedAt: new Date().toISOString(),
+  detailPage: {
+    heroSection: {
+      heading: "",
+      headingHighlight: "",
+      description: "",
+      image: "",
+      buttonText: "",
+      buttonLink: "",
+    },
+    importanceSection: {
+      heading: "",
+      headingHighlight: "",
+      description: "",
+      leftFeatures: [defaultFeature()],
+      rightFeatures: [defaultFeature()],
+    },
+  },
 });
 
 // ─────────────────────────────────────────────
@@ -177,6 +222,61 @@ export default function BlogSectionForm({
 
   // ─────────────────────────────────────────────
 
+  const updateDetailPage = (
+    blogIndex: number,
+    section: keyof DetailPage,
+    key: string,
+    value: any
+  ) => {
+    const updated = [...(form.blogs || [])];
+
+    updated[blogIndex].detailPage = {
+      ...updated[blogIndex].detailPage!,
+      [section]: {
+        ...(updated[blogIndex].detailPage as any)[section],
+        [key]: value,
+      },
+    };
+
+    set("blogs", updated);
+  };
+
+  const addFeature = (
+    blogIndex: number,
+    side: "leftFeatures" | "rightFeatures"
+  ) => {
+    const updated = [...(form.blogs || [])];
+    updated[blogIndex].detailPage?.importanceSection[side].push(defaultFeature());
+    set("blogs", updated);
+  };
+
+  const updateFeature = (
+    blogIndex: number,
+    side: "leftFeatures" | "rightFeatures",
+    featureIndex: number,
+    value: string
+  ) => {
+    const updated = [...(form.blogs || [])];
+    const target = updated[blogIndex].detailPage?.importanceSection[side];
+    if (target) {
+      target[featureIndex].text = value;
+      set("blogs", updated);
+    }
+  };
+
+  const removeFeature = (
+    blogIndex: number,
+    side: "leftFeatures" | "rightFeatures",
+    featureIndex: number
+  ) => {
+    const updated = [...(form.blogs || [])];
+    const section = updated[blogIndex].detailPage!.importanceSection;
+    section[side] = section[side].filter((_, i) => i !== featureIndex);
+    set("blogs", updated);
+  };
+
+  // ─────────────────────────────────────────────
+
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
@@ -193,8 +293,16 @@ export default function BlogSectionForm({
         updatedAt,
         created_at,
         updated_at,
-        ...payload
+        ...rest
       } = form as any;
+
+      const payload = {
+        ...rest,
+        blogs: rest.blogs?.map((b: any) => {
+          const { _id, ...blogRest } = b;
+          return blogRest;
+        }),
+      };
 
       await onSubmit(payload);
     } finally {
@@ -439,6 +547,52 @@ export default function BlogSectionForm({
                       }
                     />
                   </div>
+
+                  {/* Detail Page: Hero */}
+                  <div className="mt-8 pt-6 border-t space-y-4">
+                    <h4 className="font-semibold text-gray-700">Detail Page - Hero Section</h4>
+                    <input className="input" placeholder="Heading" value={blog.detailPage?.heroSection.heading || ""} onChange={(e) => updateDetailPage(bi, "heroSection", "heading", e.target.value)} />
+                    <input className="input" placeholder="Heading Highlight" value={blog.detailPage?.heroSection.headingHighlight || ""} onChange={(e) => updateDetailPage(bi, "heroSection", "headingHighlight", e.target.value)} />
+                    <textarea className="input" placeholder="Description" value={blog.detailPage?.heroSection.description || ""} onChange={(e) => updateDetailPage(bi, "heroSection", "description", e.target.value)} />
+                    <ImageUpload label="Hero Image" value={blog.detailPage?.heroSection.image || ""} onChange={(url: string) => updateDetailPage(bi, "heroSection", "image", url)} />
+                    <div className="grid grid-cols-2 gap-4">
+                      <input className="input" placeholder="Button Text" value={blog.detailPage?.heroSection.buttonText || ""} onChange={(e) => updateDetailPage(bi, "heroSection", "buttonText", e.target.value)} />
+                      <input className="input" placeholder="Button Link" value={blog.detailPage?.heroSection.buttonLink || ""} onChange={(e) => updateDetailPage(bi, "heroSection", "buttonLink", e.target.value)} />
+                    </div>
+                  </div>
+
+                  {/* Detail Page: Importance */}
+                  <div className="mt-8 pt-6 border-t space-y-4">
+                    <h4 className="font-semibold text-gray-700">Detail Page - Importance Section</h4>
+                    <input className="input" placeholder="Heading" value={blog.detailPage?.importanceSection.heading || ""} onChange={(e) => updateDetailPage(bi, "importanceSection", "heading", e.target.value)} />
+                    <input className="input" placeholder="Heading Highlight" value={blog.detailPage?.importanceSection.headingHighlight || ""} onChange={(e) => updateDetailPage(bi, "importanceSection", "headingHighlight", e.target.value)} />
+                    <textarea className="input" placeholder="Description" value={blog.detailPage?.importanceSection.description || ""} onChange={(e) => updateDetailPage(bi, "importanceSection", "description", e.target.value)} />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                      <div className="space-y-3">
+                        <label className="text-sm font-medium text-gray-700">Left Features</label>
+                        {blog.detailPage?.importanceSection.leftFeatures.map((feat, fi) => (
+                          <div key={fi} className="flex gap-2">
+                            <input className="input" placeholder="Feature Text" value={feat.text} onChange={(e) => updateFeature(bi, "leftFeatures", fi, e.target.value)} />
+                            <button type="button" onClick={() => removeFeature(bi, "leftFeatures", fi)} className="text-red-500 hover:bg-red-50 p-2 rounded"><Trash2 size={16} /></button>
+                          </div>
+                        ))}
+                        <button type="button" onClick={() => addFeature(bi, "leftFeatures")} className="text-blue-600 text-sm flex items-center gap-1"><Plus size={16}/> Add Left Feature</button>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <label className="text-sm font-medium text-gray-700">Right Features</label>
+                        {blog.detailPage?.importanceSection.rightFeatures.map((feat, fi) => (
+                          <div key={fi} className="flex gap-2">
+                            <input className="input" placeholder="Feature Text" value={feat.text} onChange={(e) => updateFeature(bi, "rightFeatures", fi, e.target.value)} />
+                            <button type="button" onClick={() => removeFeature(bi, "rightFeatures", fi)} className="text-red-500 hover:bg-red-50 p-2 rounded"><Trash2 size={16} /></button>
+                          </div>
+                        ))}
+                        <button type="button" onClick={() => addFeature(bi, "rightFeatures")} className="text-blue-600 text-sm flex items-center gap-1"><Plus size={16}/> Add Right Feature</button>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             )

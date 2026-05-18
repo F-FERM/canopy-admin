@@ -2,59 +2,60 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  useRouter,
-  useParams,
-} from "next/navigation";
-
 import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
-import { SecurityServicesSection } from "@/app/api/home/homeservice";
-import { listServicesSectionApi, ServicesSection, updateServicesSection } from "@/app/api/service/serviceSecurity";
-import ServicesSectionForm from "@/app/Components/ServiceSecurityForm";
+
+import {
+  useParams,
+  useRouter,
+} from "next/navigation";
+import { listServicesPageApi, RootObject, updateServicesPage } from "@/app/api/service/serviceSecurity";
+import ServicesPageForm from "@/app/Components/ServiceSecurityForm";
 
 
 
-export default function EditServicesSectionPage() {
+export default function EditServicesPage() {
   const router = useRouter();
 
   const params = useParams();
 
   const id = params?.id as string;
 
-  const [initialData, setInitialData] =
-    useState<
-      Partial<SecurityServicesSection> | null
-    >(null);
-
   const [loading, setLoading] =
     useState(true);
+
+  const [initialData, setInitialData] =
+    useState<
+      Partial<RootObject> | null
+    >(null);
 
   useEffect(() => {
     const load = async () => {
       try {
         const res =
-          await listServicesSectionApi(
+          await listServicesPageApi(
             {}
           );
 
-        const all = Array.isArray(res)
-          ? res
-          : (res as any)?.data || [res];
+        const all =
+          Array.isArray(res)
+            ? res
+            : (res as any)?.data || [
+                res,
+              ];
 
         const found = all.find(
           (
-            item: ServicesSection
+            item: RootObject
           ) => item._id === id
         );
 
-        setInitialData(found || null);
-      } catch (err) {
-        console.error(
-          "Load error:",
-          err
+        setInitialData(
+          found || null
         );
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -67,7 +68,7 @@ export default function EditServicesSectionPage() {
     data: any
   ) => {
     try {
-      await updateServicesSection({
+      await updateServicesPage({
         ...data,
         _id: id,
       });
@@ -75,11 +76,8 @@ export default function EditServicesSectionPage() {
       router.push(
         "/admin/service/service-security"
       );
-    } catch (err) {
-      console.error(
-        "Update error:",
-        err
-      );
+    } catch (error) {
+      console.error(error);
 
       alert(
         "Failed to update section"
@@ -87,50 +85,49 @@ export default function EditServicesSectionPage() {
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
       </div>
     );
+  }
 
-  if (!initialData)
+  if (!initialData) {
     return (
-      <div className="p-8 text-center text-gray-500">
-        Item not found.{" "}
-        <Link
-          href="/admin/service/service-security"
-          className="text-blue-600 underline"
-        >
-          Go back
-        </Link>
+      <div className="text-center py-10">
+        Data not found
       </div>
     );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Link
           href="/admin/service/service-security"
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-full"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={22} />
         </Link>
 
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            Edit Services Section
+          <h1 className="text-2xl font-bold">
+            Edit Services Page
           </h1>
 
           <p className="text-gray-500">
-            Update services section.
+            Update services page
+            section
           </p>
         </div>
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-xl border border-dashed">
-        <ServicesSectionForm
-          initialData={initialData}
+      <div className="bg-gray-50 border rounded-xl p-6">
+        <ServicesPageForm 
+          initialData={
+            initialData
+          }
           onSubmit={handleSubmit}
         />
       </div>

@@ -1,35 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
 
 import {
   Plus,
   Edit,
   Trash2,
+  Eye,
 } from "lucide-react";
-import { deleteServicesSection, listServicesSectionApi, ServicesSection } from "@/app/api/service/serviceSecurity";
+import { deleteServicesPage, listServicesPageApi, RootObject } from "@/app/api/service/serviceSecurity";
 
 
-export default function ServicesSectionPage() {
-  const [data, setData] = useState<
-    ServicesSection[]
-  >([]);
-
-  const [loading, setLoading] =
-    useState(true);
+export default function ServicesPageListPage() {
+  const [data, setData] = useState<RootObject[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
-      const res =
-        await listServicesSectionApi(
-          {}
-        );
+      const res = await listServicesPageApi({});
 
-      const arrayData = Array.isArray(
-        res
-      )
+      const arrayData = Array.isArray(res)
         ? res
         : (res as any)?.data || [res];
 
@@ -38,12 +29,8 @@ export default function ServicesSectionPage() {
           ? arrayData
           : []
       );
-    } catch (err) {
-      console.error(
-        "Fetch error:",
-        err
-      );
-
+    } catch (error) {
+      console.error(error);
       setData([]);
     } finally {
       setLoading(false);
@@ -65,67 +52,65 @@ export default function ServicesSectionPage() {
       return;
 
     try {
-      await deleteServicesSection(
-        id
-      );
-
+      await deleteServicesPage(id);
       fetchData();
-    } catch (err) {
-      console.error(
-        "Delete error:",
-        err
-      );
-
-      alert("Failed to delete item");
+    } catch (error) {
+      console.error(error);
+      alert("Delete failed");
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
       </div>
     );
+  }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      {/* Header */}
+
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">
-            Services Section
+            Services Page
           </h1>
 
           <p className="text-gray-500">
-            Manage services section.
+            Manage services page content
           </p>
         </div>
 
         <Link
           href="/admin/service/service-security/create"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
         >
-          <Plus size={20} />
+          <Plus size={18} />
           Add Section
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-        <table className="w-full text-left border-collapse">
+      {/* Table */}
+
+      <div className="bg-white border rounded-xl overflow-hidden">
+        <table className="w-full">
           <thead>
             <tr className="bg-gray-50 border-b">
-              <th className="p-4 font-semibold text-gray-700">
+              <th className="text-left p-4">
                 Heading
               </th>
 
-              <th className="p-4 font-semibold text-gray-700">
+              <th className="text-left p-4">
                 Services
               </th>
 
-              <th className="p-4 font-semibold text-gray-700">
+              <th className="text-left p-4">
                 Description
               </th>
 
-              <th className="p-4 font-semibold text-gray-700">
+              <th className="text-left p-4">
                 Actions
               </th>
             </tr>
@@ -136,37 +121,43 @@ export default function ServicesSectionPage() {
               data.map((item) => (
                 <tr
                   key={item._id}
-                  className="border-b hover:bg-gray-50 transition-colors"
+                  className="border-b hover:bg-gray-50"
                 >
                   <td className="p-4">
-                    <p className="font-medium text-gray-800">
+                    <h3 className="font-semibold">
                       {item.heading}
-                    </p>
+                    </h3>
 
-                    <p className="text-sm text-blue-600">
+                    <p className="text-blue-600 text-sm">
                       {
                         item.headingHighlight
                       }
                     </p>
                   </td>
 
-                  <td className="p-4 text-sm text-gray-600">
-                    {
-                      item.services
-                        ?.length
-                    }{" "}
-                    services
+                  <td className="p-4">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Eye size={16} />
+
+                      {
+                        item.services
+                          ?.length
+                      }{" "}
+                      Services
+                    </div>
                   </td>
 
-                  <td className="p-4 text-sm text-gray-600 max-w-md truncate">
-                    {item.description}
+                  <td className="p-4 max-w-md">
+                    <p className="line-clamp-2 text-sm text-gray-600">
+                      {item.description}
+                    </p>
                   </td>
 
                   <td className="p-4">
-                    <div className="flex gap-3">
+                    <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/service/service-security/edit/${item._id}`}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-md"
                       >
                         <Edit size={18} />
                       </Link>
@@ -177,9 +168,11 @@ export default function ServicesSectionPage() {
                             item._id
                           )
                         }
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-md"
                       >
-                        <Trash2 size={18} />
+                        <Trash2
+                          size={18}
+                        />
                       </button>
                     </div>
                   </td>
@@ -189,9 +182,9 @@ export default function ServicesSectionPage() {
               <tr>
                 <td
                   colSpan={4}
-                  className="p-8 text-center text-gray-500 italic"
+                  className="p-10 text-center text-gray-500"
                 >
-                  No sections found.
+                  No data found
                 </td>
               </tr>
             )}

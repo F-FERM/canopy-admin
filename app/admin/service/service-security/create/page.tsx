@@ -1,34 +1,29 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import Link from "next/link";
 
 import { ArrowLeft } from "lucide-react";
-import { createServicesSection } from "@/app/api/service/serviceSecurity";
-import ServicesSectionForm from "@/app/Components/ServiceSecurityForm";
+
+import { useRouter } from "next/navigation";
+import { createServicesPage } from "@/app/api/service/serviceSecurity";
+import ServicesPageForm from "@/app/Components/ServiceSecurityForm";
 
 
 
-export default function CreateServicesSectionPage() {
+export default function CreateServicesPage() {
   const router = useRouter();
 
   const handleSubmit = async (
     data: any
   ) => {
     try {
-      await createServicesSection(
-        data
-      );
+      await createServicesPage(data);
 
       router.push(
         "/admin/service/service-security"
       );
-    } catch (err) {
-      console.error(
-        "Create error:",
-        err
-      );
+    } catch (error) {
+      console.error(error);
 
       alert(
         "Failed to create section"
@@ -41,24 +36,25 @@ export default function CreateServicesSectionPage() {
       <div className="flex items-center gap-4">
         <Link
           href="/admin/service/service-security"
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-full"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={22} />
         </Link>
 
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            Add Services Section
+          <h1 className="text-2xl font-bold">
+            Create Services Page
           </h1>
 
           <p className="text-gray-500">
-            Create services section.
+            Add new services page
+            section
           </p>
         </div>
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-xl border border-dashed">
-        <ServicesSectionForm
+      <div className="bg-gray-50 border rounded-xl p-6">
+        <ServicesPageForm
           onSubmit={handleSubmit}
         />
       </div>
